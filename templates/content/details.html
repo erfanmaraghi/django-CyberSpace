@@ -1,0 +1,130 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <div class="p-3 bg-dark-subtle rounded-4 w-100 m-auto mt-3" style="max-width: 600px">
+        {#  Image and arrows to next post and previous post  #}
+        <div class="position-relative d-flex align-items-center">
+            <a href="{% url 'content:detail' previousPost.id %}" class="position-absolute start-0 ms-2">
+                <i class="fa fa-angle-left text-white" style="font-size: xxx-large"></i>
+            </a>
+            <a href="{% url 'content:detail' nextPost.id %}" class="position-absolute end-0 me-2">
+                <i class="fa fa-angle-right text-white" style="font-size: xxx-large"></i>
+            </a>
+            <img src="{{ post.content.url }}" alt="{{ post.title }}" class="w-100 rounded-4">
+        </div>
+        {#  -----------------------  #}
+        <div class="d-flex justify-content-between align-items-center p-2 mt-2 pb-0">
+            <h2 class="m-0 d-flex align-items-center justify-content-evenly">{{ post.title }}
+                <a href="{% url 'content:profile' post.created_by.id %}"
+                   class="blockquote link-secondary m-0 ms-2">
+                    by {{ post.created_by.username }}
+                    {% if not request.user == post.created_by %}
+                        <form method="POST" action="{% url 'content:follow' post.created_by.id %}" id="follow-form"
+                              class="d-flex">
+                            {% csrf_token %}
+                            <input type="hidden" name="nextUrl" value="{% url 'content:detail' post.id %}">
+                            {% if i_followed_it %}
+                                <a href="javascript:{}"
+                                   onclick="document.getElementById('follow-form').submit();"
+                                   class="link-secondary blockquote m-0">
+                                    UnFollow
+                                </a>
+                            {% else %}
+                                <a href="javascript:{}"
+                                   onclick="document.getElementById('follow-form').submit();"
+                                   class="link-secondary blockquote m-0">
+                                    Follow
+                                </a>
+                            {% endif %}
+                        </form>
+                    {% endif %}
+                </a></h2>
+
+            <form method="POST" action="{% url 'content:like' post.id %}" id="like-form">
+                {% csrf_token %}
+                <input type="hidden" name="nextUrl" value="{% url 'content:detail' post.id %}">
+                <h3 class="m-0">
+                    {% if i_liked_it %}
+                        <a href="javascript:{}"
+                           onclick="document.getElementById('like-form').submit();"
+                           class="text-decoration-none">
+                            <i class="fa fa-heart me-2" style="cursor: pointer;color: red"></i>
+                        </a>
+                    {% else %}
+                        <a href="javascript:{}"
+                           onclick="document.getElementById('like-form').submit();"
+                           class="text-decoration-none">
+                            <i class="fa fa-heart me-2" style="cursor: pointer;color: white"></i>
+                        </a>
+                    {% endif %}
+                    {{ post.likes.count }}
+                </h3>
+            </form>
+        </div>
+
+        {% if post.caption %}
+            <hr>
+            <p class="pb-2 ms-2">{{ post.caption }}</p>
+        {% endif %}
+
+        <hr>
+
+        <form class="p-2" method="post">
+            {% csrf_token %}
+            Comment:
+            <div class="input-group mb-3">
+                {{ commentForm.content }}
+                <button class="btn btn-outline-secondary rounded-end-4" type="submit">Send</button>
+            </div>
+        </form>
+
+        <hr>
+
+        {% if post.comments.all %}
+            <hr>
+        {% endif %}
+
+        {% for comment in post.comments.all %}
+            <div class="d-flex justify-content-between align-items-center p-3 pb-0 bg-secondary-subtle m-2 rounded-4">
+                <div>
+                    <h4>{{ comment.user.username }}</h4>
+                    <p>
+                        {{ comment.content }}
+                        {% if comment.user == request.user %}
+                            <a href="{% url 'content:deleteComment' comment.id %}"
+                               class="text-decoration-none text-dark-emphasis">
+                                <i class="fa fa-trash trash-icon"
+                                   style="transition: all 200ms"
+                                   onmouseover="this.style.color = 'red'"
+                                   onmouseout="this.style.color = '#dee2e6'"></i>
+                            </a>
+                        {% endif %}
+                    </p>
+                </div>
+                <div>
+                    <p>{{ comment.added_time }}</p>
+
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if post.comments.all %}
+            <hr>
+        {% endif %}
+
+        <p class="blockquote ms-2 mt-2">This Post Created {{ post.added_time }}
+            {% if post.created_by == request.user %}
+                <a href="{% url 'content:deletePost' post.id %}"
+                   class="text-decoration-none text-dark-emphasis">
+                    <i class="fa fa-trash trash-icon"
+                       style="transition: all 200ms"
+                       onmouseover="this.style.color = 'red'"
+                       onmouseout="this.style.color = '#dee2e6'"></i>
+                </a>
+            {% endif %}
+        </p>
+    </div>
+{% endblock %}
+

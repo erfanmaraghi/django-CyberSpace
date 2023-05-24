@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+
+{% block title %}You can't delete this item{% endblock %}
+
+{% block content %}
+    <h1 class="alert alert-danger m-3 rounded-4 p-4 d-flex align-items-center justify-content-between">
+        You can't delete {{ label }} that is not yours
+        <a href="{% if is_com %}{% url 'content:detail' comment.post.id %}{% else %}{% url 'content:detail' post.id %}{% endif %}"
+           class="btn btn-secondary">
+            Ok return to post
+        </a>
+    </h1>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Wellcome{% endblock %}
+
+{% block content %}
+    <div {% if posts %}class="p-3"{% endif %}>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-6">
+            {% for post in posts %}
+                <a class="col p-1 text-decoration-none position-relative" href="{% url 'content:detail' post.id %}">
+                    <div class="bg-dark-subtle rounded-4 h-100 p-2 d-flex flex-column justify-content-between">
+                        <img src="{{ post.content.url }}" alt="{{ post.title }}" class="w-100 rounded-4 post-grid">
+                        <div class="d-flex align-items-center justify-content-evenly h-100">
+                            <h2 class="mt-2 text-center">{{ post.title }}</h2>
+                        </div>
+                    </div>
+                    <h5 class="position-absolute top-0 end-0 m-4">{{ post.likes.count }} <i class="fa fa-heart"></i>
+                    </h5>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% if not posts %}
+        <h2 class="alert alert-info rounded-4 m-3 p-4">There is no post in CyberSpace. Do you want to be first member?
+            <a class="link-info" href="{% url 'content:new' %}">Click Here</a>.
+        </h2>
+    {% endif %}
+{% endblock %}

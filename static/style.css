@@ -1,0 +1,24 @@
+.post-grid {
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.post-card {
+    transition: all 200ms;
+}
+
+.post-card:hover {
+    background-color: #131616;
+}
+
+.trash-icon {
+    transition: all 200ms;
+}
+
+.trash-icon:hover {
+    color: red;
+}
+
+.profile-circle {
+    background-color: red;
+}

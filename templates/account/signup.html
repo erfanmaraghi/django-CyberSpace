@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Signup{% endblock %}
+
+{% block content %}
+    <div class="p-3  rounded-4 w-100 m-auto mt-3 bg-dark-subtle" style="max-width: 600px">
+        <h2 class="text-center p-3 h2">Sign up</h2>
+        <form class="w-100 p-3" style="max-width: 600px" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            Username:
+            <br>
+            {{ form.username }}
+            <br>
+            Password:
+            <br>
+            {{ form.password1 }}
+            <br>
+            Password Confirmation:
+            <br>
+            {{ form.password2 }}
+            <br>
+            <button type="submit" class="btn btn-primary w-100 rounded-4">Sign up</button>
+        </form>
+    </div>
+{% endblock %}

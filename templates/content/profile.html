@@ -1,0 +1,96 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ user.username }}{% endblock %}
+ycharm
+
+{% block content %}
+    <div>
+        <header class="p-3 bg-dark-subtle m-3 rounded-4 d-md-flex d-block justify-content-between align-items-center flex-wrap">
+            <h2 class="m-0 me-3 text-center display-5 d-flex align-items-center">
+                {{ user.username }}
+                <a href="{% url 'account:delete' %}"
+                   class="text-decoration-none text-dark-emphasis h5 ms-2">
+                    <i class="fa fa-trash trash-icon"
+                       style="transition: all 200ms"
+                       onmouseover="this.style.color = 'red'"
+                       onmouseout="this.style.color = '#dee2e6'"></i>
+                </a>
+            </h2>
+
+            <div class="d-flex mt-3 justify-content-center">
+                <div class="d-flex flex-column align-items-center alert alert-secondary me-2">
+                    <p class="m-0 blockquote">{{ posts.count }}</p>
+                    <p class="m-0 blockquote">Posts</p>
+                </div>
+                <a
+                        class="d-flex flex-column align-items-center alert alert-secondary me-2 text-decoration-none"
+                        {% if user.follower.count %}
+                        href="{% url 'content:followers' user.id %}"
+                        {% endif %}>
+                    <p class="m-0 blockquote">{{ user.follower.count }}</p>
+                    <p class="m-0 blockquote">Followers</p>
+                </a>
+                <a
+                        class="d-flex flex-column align-items-center alert alert-secondary text-decoration-none"
+                        {% if user.followed.count %}
+                        href="{% url 'content:followings' user.id %}"
+                        {% endif %}>
+                    <p class="m-0 blockquote">{{ user.followed.count }}</p>
+                    <p class="m-0 blockquote">Followings</p>
+                </a>
+            </div>
+            {% if not request.user == user %}
+                <div class="d-flex justify-content-center align-items-center mt-2 m-md-0">
+
+                    <form method="POST" action="{% url 'content:follow' user.id %}" id="follow-form"
+                          class="d-flex">
+                        {% csrf_token %}
+                        <input type="hidden" name="nextUrl" value="{% url 'content:profile' user.id %}">
+                        {% if i_followed_it %}
+                            <a href="javascript:{}"
+                               onclick="document.getElementById('follow-form').submit();"
+                               class="text-decoration-none btn btn-outline-primary m-0 me-2 d-flex align-items-center">
+                                UnFollow
+                            </a>
+                        {% else %}
+                            <a href="javascript:{}"
+                               onclick="document.getElementById('follow-form').submit();"
+                               class="text-decoration-none btn btn-primary m-0 me-2 d-flex align-items-center">
+                                Follow
+                            </a>
+                        {% endif %}
+                    </form>
+                    <a href="{% url 'chat:chat_detail' user.id %}"
+                       class="text-decoration-none btn btn-outline-light m-0 d-flex align-items-center">
+                        <i class="fa fa-comment me-1"></i>
+                        Message
+                    </a>
+                </div>
+            {% endif %}
+        </header>
+        <div {% if posts %}class="p-3"{% endif %}>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-6 p-2">
+                {% for post in posts %}
+                    <a class="col p-1 text-decoration-none position-relative" href="{% url 'content:detail' post.id %}">
+                        <div class="bg-dark-subtle rounded-4 h-100 p-2 d-flex flex-column justify-content-between">
+                            <img src="{{ post.content.url }}" alt="{{ post.title }}" class="w-100 rounded-4 post-grid">
+                            <div class="d-flex align-items-center justify-content-evenly h-100">
+                                <h2 class="mt-2 text-center">{{ post.title }}</h2>
+                            </div>
+                        </div>
+                        <h5 class="position-absolute top-0 end-0 m-4">{{ post.likes.count }} <i class="fa fa-heart"></i>
+                        </h5>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% if user == request.user and not posts %}
+            <h2 class="alert alert-info rounded-4 m-3 p-4">You don't have any post.
+                <a class="link-info" href="{% url 'content:new' %}">Click here</a>
+                to create your first post on CyberSpace!
+            </h2>
+        {% elif not user == request.user and not posts %}
+            <h2 class="alert alert-info rounded-4 m-3 p-4">This user don't have any post on CyberSpace!</h2>
+        {% endif %}
+    </div>
+{% endblock %}

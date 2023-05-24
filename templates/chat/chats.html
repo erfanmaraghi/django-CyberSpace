@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+
+{% block title %}Inbox{% endblock %}
+
+{% block content %}
+    <div class="p-2 bg-dark-subtle rounded-4 w-100 m-auto mt-3" style="max-width: 600px">
+        {% if chats %}
+            {% for chat in chats %}
+                <a {% for member in chat.members.all %}{% if not member == request.user %}
+                    href="{% url 'chat:chat_detail' member.id %}"
+                {% endif %}{% endfor %}
+                    class="bg-secondary-subtle rounded-4 p-3 m-2 text-decoration-none d-block text-white-50">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        {% for member in chat.members.all %}{% if not member == request.user %}
+                            <h2 class="m-0">{{ member.username }}</h2>
+                        {% endif %}{% endfor %}
+                        <p class="m-0">{{ chat.last_edited }}</p>
+                    </div>
+                    {% if chat.messages.last %}
+                        <div class="ms-2 me-2 text-nowrap overflow-hidden {% if request.user == chat.messages.last.sender %}text-success-emphasis{% endif %}">
+                            <p class="m-0 blockquote d-inline-block text-nowrap">{{ chat.messages.last.sender.username }}:</p>
+                            <p class="m-0 d-inline-block text-nowrap">{{ chat.messages.last.short_content }}</p>
+                        </div>
+                    {% endif %}
+
+                </a>
+            {% endfor %}
+        {% else %}
+            <h2 class="alert alert-info rounded-4 m-3 p-4">
+                You don't have any chats.
+                <a href="{% url 'core:index' %}">Click here</a>
+                to return to home page
+            </h2>
+        {% endif %}
+    </div>
+{% endblock %}

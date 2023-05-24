@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ label }}{% endblock %}
+
+{% block content %}
+
+    <div class="p-3">
+        {% for follower in followers %}
+            <div class="bg-dark-subtle p-3 mb-3 rounded-4 d-flex justify-content-between align-items-center">
+                <a
+                        class="text-decoration-none link-light display-5"
+                        href="{% url 'content:profile' follower.follower.id %}">{{ follower.follower }}</a>
+                <div>
+                    <div class="d-flex mt-3 justify-content-center">
+                        <a
+                                class="d-flex flex-column align-items-center alert alert-secondary me-2 text-decoration-none"
+                                href="{% url 'content:profile' follower.follower.id %}">
+                            <p class="m-0 blockquote">{{ follower.follower.contents.count }}</p>
+                            <p class="m-0 blockquote">Posts</p>
+                        </a>
+                        <a
+                                class="d-flex flex-column align-items-center alert alert-secondary me-2 text-decoration-none"
+                                {% if follower.follower.follower.count %}
+                                href="{% url 'content:followers' follower.follower.id %}"
+                                {% endif %}>
+                            <p class="m-0 blockquote">{{ follower.follower.follower.count }}</p>
+                            <p class="m-0 blockquote">Followers</p>
+                        </a>
+                        <a
+                                class="d-flex flex-column align-items-center alert alert-secondary text-decoration-none"
+                                {% if follower.follower.followed.count %}
+                                href="{% url 'content:followings' follower.follower.id %}"
+                                {% endif %}>
+                            <p class="m-0 blockquote">{{ follower.follower.followed.count }}</p>
+                            <p class="m-0 blockquote">Followings</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}

@@ -9,8 +9,8 @@ ycharm
             <h2 class="m-0 me-3 text-center display-5 d-flex align-items-center">
                 {{ user.username }}
                 <a href="{% url 'account:delete' %}"
-                   class="text-decoration-none text-dark-emphasis h5 ms-2">
-                    <i class="fa fa-trash trash-icon"
+                   class="text-decoration-none text-dark-emphasis h3 ms-2">
+                    <i class="bi bi-trash-fill trash-icon"
                        style="transition: all 200ms"
                        onmouseover="this.style.color = 'red'"
                        onmouseout="this.style.color = '#dee2e6'"></i>
@@ -62,7 +62,7 @@ ycharm
                     </form>
                     <a href="{% url 'chat:chat_detail' user.id %}"
                        class="text-decoration-none btn btn-outline-light m-0 d-flex align-items-center">
-                        <i class="fa fa-comment me-1"></i>
+                        <i class="bi bi-chat-fill me-1"></i>
                         Message
                     </a>
                 </div>
@@ -78,7 +78,7 @@ ycharm
                                 <h2 class="mt-2 text-center">{{ post.title }}</h2>
                             </div>
                         </div>
-                        <h5 class="position-absolute top-0 end-0 m-4">{{ post.likes.count }} <i class="fa fa-heart"></i>
+                        <h5 class="position-absolute top-0 end-0 m-4">{{ post.likes.count }} <i class="bi bi-heart-fill"></i>
                         </h5>
                     </a>
                 {% endfor %}

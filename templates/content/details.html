@@ -7,10 +7,10 @@
         {#  Image and arrows to next post and previous post  #}
         <div class="position-relative d-flex align-items-center">
             <a href="{% url 'content:detail' previousPost.id %}" class="position-absolute start-0 ms-2">
-                <i class="fa fa-angle-left text-white" style="font-size: xxx-large"></i>
+                <i class="bi bi-caret-left-fill text-white" style="font-size: xxx-large"></i>
             </a>
             <a href="{% url 'content:detail' nextPost.id %}" class="position-absolute end-0 me-2">
-                <i class="fa fa-angle-right text-white" style="font-size: xxx-large"></i>
+                <i class="bi bi-caret-right-fill text-white" style="font-size: xxx-large"></i>
             </a>
             <img src="{{ post.content.url }}" alt="{{ post.title }}" class="w-100 rounded-4">
         </div>
@@ -50,13 +50,13 @@
                         <a href="javascript:{}"
                            onclick="document.getElementById('like-form').submit();"
                            class="text-decoration-none">
-                            <i class="fa fa-heart me-2" style="cursor: pointer;color: red"></i>
+                            <i class="bi bi-heart-fill me-2" style="cursor: pointer;color: red"></i>
                         </a>
                     {% else %}
                         <a href="javascript:{}"
                            onclick="document.getElementById('like-form').submit();"
                            class="text-decoration-none">
-                            <i class="fa fa-heart me-2" style="cursor: pointer;color: white"></i>
+                            <i class="bi bi-heart-fill" style="cursor: pointer;color: white"></i>
                         </a>
                     {% endif %}
                     {{ post.likes.count }}
@@ -95,7 +95,7 @@
                         {% if comment.user == request.user %}
                             <a href="{% url 'content:deleteComment' comment.id %}"
                                class="text-decoration-none text-dark-emphasis">
-                                <i class="fa fa-trash trash-icon"
+                                <i class="bi bi-trash-fill trash-icon"
                                    style="transition: all 200ms"
                                    onmouseover="this.style.color = 'red'"
                                    onmouseout="this.style.color = '#dee2e6'"></i>
@@ -118,7 +118,7 @@
             {% if post.created_by == request.user %}
                 <a href="{% url 'content:deletePost' post.id %}"
                    class="text-decoration-none text-dark-emphasis">
-                    <i class="fa fa-trash trash-icon"
+                    <i class="bi bi-trash-fill trash-icon"
                        style="transition: all 200ms"
                        onmouseover="this.style.color = 'red'"
                        onmouseout="this.style.color = '#dee2e6'"></i>
